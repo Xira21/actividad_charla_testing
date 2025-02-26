@@ -9,21 +9,23 @@ class Banco {
     }
 
     public void depositar(double cantidad) {
-        if (cantidad > 0) {
-            saldo = saldo.add(BigDecimal.valueOf(cantidad));
-        } else {
-            System.out.println("Error: No se pueden depositar valores negativos");
-        }
+        if (cantidad <= 0) {   // Cambiar la condición para incluir el 0
+            System.out.println("Error: No se pueden depositar valores negativos o cero");
+            return;
+        }    
+        saldo = saldo.add(BigDecimal.valueOf(cantidad));        
     }
 
     public void retirar(double cantidad) {
-        if (cantidad > 0 && saldo.compareTo(BigDecimal.valueOf(cantidad)) >= 0) {
-            saldo = saldo.subtract(BigDecimal.valueOf(cantidad));
-        } else if (cantidad <= 0) {
+         if (cantidad <= 0) {
             System.out.println("Error: No se pueden retirar valores negativos o cero");
+            return;
+        }
+        if (saldo.compareTo(BigDecimal.valueOf(cantidad)) >= 0) {
+            saldo = saldo.subtract(BigDecimal.valueOf(cantidad));
         } else {
             System.out.println("Fondos insuficientes");
-        }
+        }        
     }
 
     public double getSaldo() {
@@ -73,6 +75,8 @@ public class Main {
         Banco banco = new Banco(100);
         banco.retirar(150);
         assertEquals(100, banco.getSaldo(), "Test retiro fallido (saldo insuficiente)");
+        
+        
     }
 
     public static void testRetiroNegativo() {
